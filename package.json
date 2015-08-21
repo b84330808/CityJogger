@@ -1,0 +1,10 @@
+{
+  "name": "repo",
+  "version": "1.0.0",
+  "description": "A multi-web-terminal",
+  "author": "b84330808,kenchou0731,SeanChenU",
+  "license": "MIT",
+  "dependencies": {
+    "request": "*"
+  }
+}
