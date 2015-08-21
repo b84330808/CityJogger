@@ -5,6 +5,10 @@
   "author": "b84330808,kenchou0731,SeanChenU",
   "license": "MIT",
   "dependencies": {
-    "request": "*"
+    "request": "*",
+    "express": "*",
+    "express-session": "*",
+    "ejs": "*"
+
   }
 }

@@ -1,0 +1,4 @@
+module.export = {
+	cars: [],
+	constructions: []
+}
