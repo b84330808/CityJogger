@@ -1,38 +1,50 @@
 /*  */
 var request = require('request');
-var data = require('./data.js');
+var datas = require('./data.js');
 
-var cars_url = 'http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=5aacba65-afda-4ad5-88f5-6026934140e6';
-var constructions_url = 'http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=201d8ae8-dffc-4d17-ae1f-e58d8a95b162';
+getCars();
+getConstructions();
+getUV();
+getAirQuality();
 
-/* cars */
-request(cars_url, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        data.cars = (JSON.parse(body)).result.results;
-        // console.log(obj.result.results);
-    }
-})
-setInterval(function() {
-    request(cars_url, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            data.cars = (JSON.parse(body)).result.results;
-            // console.log(obj.result.results);
-        }
-    })
-}, 300000);
 
-/* constructions */
-request(constructions_url, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        data.constructions = (JSON.parse(body)).result.results;
-        // console.log(obj.result.results);
-    }
-})
-setInterval(function() {
-    request(constructions_url, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            data.constructions = (JSON.parse(body)).result.results;
-            // console.log(obj.result.results);
-        }
-    })
-}, 86400000);
+/**/
+function getCars(){
+	request(datas.cars.url, function(error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	        datas.cars.data = (JSON.parse(body)).result.results;
+	        // console.log(obj.result.results);
+	    }
+	});
+	setTimeout(getCars, datas.cars.updateInterval);
+}
+
+function getConstructions(){
+	request(datas.constructions.url, function(error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	        datas.constructions.data = (JSON.parse(body)).result.results;
+	        // console.log(obj.result.results);
+	    }
+	});
+	setTimeout(getConstructions, datas.constructions.updateInterval);
+}
+
+function getUV(){
+	request(datas.uv.url, function(error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	        datas.uv.data = (JSON.parse(body));
+	        // console.log(obj.result.results);
+	    }
+	});
+	setTimeout(getUV, datas.uv.updateInterval);
+}
+
+function getAirQuality(){
+	request(datas.airquality.url, function(error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	        datas.airquality.data = (JSON.parse(body));
+	        // console.log(obj.result.results);
+	    }
+	});
+	setTimeout(getAirQuality, datas.airquality.updateInterval);
+}
