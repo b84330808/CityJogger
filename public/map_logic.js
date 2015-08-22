@@ -157,6 +157,11 @@ function drawCrimeSiteOnMap(crimeData, map) {
 
 }
 
+function drawParkOnMap(parkData, map) {
+    for (var i = 0; i < parkData.length; i++) {
+        drawAMakerOnMap([parkData[i].lat, parkData[i].lng], map, '公園', '')
+    };
+}
 
 // ==== Get Live Data ====
 function getDataFromServer() {
