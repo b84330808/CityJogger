@@ -15,6 +15,10 @@ function initMap() {
         zoom: 8
     });
 
+    map.addListener('click', function(event) {
+        console.log(event.latLng.lat() + ", " + event.latLng.lng())
+    });
+
     navigator.geolocation.getCurrentPosition(function(position) {
         console.log(position)
 
@@ -184,6 +188,11 @@ function getDataFromServer() {
         drawConstructionSiteOnMap(constructions, map)
         drawCrimeSiteOnMap(crime, map)
 
+        for (var i = 0; i < constructions.length; i++) {
+            addConstructionSiteToGrid(constructions[i])
+        };
+
+        console.log(grid)
     })
 }
 
@@ -207,11 +216,11 @@ function getRoutes(km){
         var list = [];
 
         for(var i = 0; i < cross_road_data.length; i++){
-            if(GetDistance(position.coords.latitude, position.coords.longitude, parseFloat(cross_road_data[i][0], parseFloat(cross_road_data[i][1])) <= 5){
+            if(GetDistance(position.coords.latitude, position.coords.longitude, parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])) <= km) {
 
                 var request = {
                     origin: aMapsLatLng(position.coords.latitude, position.coords.longitude),
-                    destination: aMapsLatLng(parseFloat(cross_road_data[i][0], parseFloat(cross_road_data[i][1]),
+                    destination: aMapsLatLng(parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])),
                     optimizeWaypoints: true,
                     travelMode: google.maps.TravelMode.WALKING
                 }
