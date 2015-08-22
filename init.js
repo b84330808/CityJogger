@@ -10,6 +10,7 @@ getUV();
 getAirQuality();
 /* static */
 getCrime();
+getPark();
 
 
 /**/
@@ -67,5 +68,11 @@ function getAirQuality(){
 function getCrime(){
 	fs.readFile(datas.crime.url, function(err, data){
 		datas.crime.data = data;
+	});
+}
+
+function getPark(){
+	fs.readFile(datas.park.url, function(err, data){
+		datas.park.data = data;
 	});
 }
