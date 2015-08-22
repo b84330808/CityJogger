@@ -1,11 +1,15 @@
 /*  */
 var request = require('request');
+var fs = require('fs');
 var datas = require('./data.js');
 
+/* dynamic */
 getCars();
 getConstructions();
 getUV();
 getAirQuality();
+/* static */
+getCrime();
 
 
 /**/
@@ -58,4 +62,10 @@ function getAirQuality(){
 	    }
 	});
 	setTimeout(getAirQuality, datas.airquality.updateInterval);
+}
+
+function getCrime(){
+	fs.readFile(datas.crime.url, function(err, data){
+		datas.crime.data = data;
+	});
 }

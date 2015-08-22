@@ -31,7 +31,7 @@ function initMap() {
 
     // Testing
     // drawLinesOnMap([aLocation(25.02, 121.534), aLocation(25.03, 121.534)], map)
-    // getCarData(map)
+    getCarData(map)
     parseCrossData()
 
 }
