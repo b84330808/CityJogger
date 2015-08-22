@@ -166,12 +166,12 @@ function twd97_to_latlng($x, $y) {
 
 function getCrime() {
     fs.readFile(datas.crime.url, function(err, data) {
-        datas.crime.data = data;
+        datas.crime.data = JSON.parse(data);
     });
 }
 
 function getPark() {
     fs.readFile(datas.park.url, function(err, data) {
-        datas.park.data = data;
+        datas.park.data = JSON.parse(data);
     });
 }

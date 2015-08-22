@@ -19,7 +19,8 @@ app.get('/', function(req, res){
   	res.end(data);
 });
 app.get('/getdata', function(req, res){
-  	res.end(datas);
+	console.log(JSON.stringify(datas))
+  	res.end(JSON.stringify(datas));
 });
 
 var data = require('./data.js');
