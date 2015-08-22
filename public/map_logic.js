@@ -22,7 +22,10 @@ function initMap() {
     navigator.geolocation.getCurrentPosition(function(position) {
         console.log(position)
 
-        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        // userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        // userLocation = new google.maps.LatLng(25.015384309623297, 121.53891563415527)
+        userLocation = new google.maps.LatLng(25.033661079435696, 121.51153564453125)
+
 
         map.setCenter(userLocation);
         map.setZoom(14);
@@ -33,7 +36,7 @@ function initMap() {
         // calcRoute(userLocation, aMapsLatLng(25.1, 121.56), map)
 
         // Testing 
-        getBlockWithinDistance(1.5)
+        getBlockWithinDistance(1)
 
     });
 
@@ -149,6 +152,15 @@ function drawCarDataOnMap(liveCarData, map) {
 
 }
 
+// 
+function addCarsDataToGridLine(aLiveCarData) {
+    var startLng = parseFloat(aLiveCarData.StartWgsY)
+    var startLat = parseFloat(aLiveCarData.StartWgsX)
+    var endLng = parseFloat(aLiveCarData.EndWgsY)
+    var endLat = parseFloat(aLiveCarData.EndWgsX)
+    classifyLine({lat:startLat, lng:startLng}, {lat:endLat, lng:endLng}, parseFloat(aLiveCarData.AvgOcc))
+}
+
 function drawConstructionSiteOnMap(constructionData, map) {
 
     for (var i = 0; i < constructionData.length; i++) {
@@ -187,15 +199,25 @@ function getDataFromServer() {
 
         // console.log("carsData: " + carsData)
 
+        // Draw all on map
         drawCarDataOnMap(carsData, map)
         drawConstructionSiteOnMap(constructions, map)
         drawCrimeSiteOnMap(crime, map)
 
+        // Add to grid system
         for (var i = 0; i < constructions.length; i++) {
             addConstructionSiteToGrid(constructions[i])
         };
 
-        console.log(grid)
+        for (var i = 0; i < crime.length; i++) {
+            addCrimeSiteToGrid(crime[i])
+        };
+
+        for (var i = 0; i < carsData.length; i++) {
+            addCarsDataToGridLine(carsData[i])
+        };
+
+        // console.log(JSON.stringify(grid))
     })
 }
 
@@ -208,13 +230,14 @@ function addConstructionSiteToGrid(aConstruction) {
     classify(gf(aConstruction.X), gf(aConstruction.Y), 1)
 }
 
-function addCrimeStieToGrid(aCrimeSiteData) {
+function addCrimeSiteToGrid(aCrimeSiteData) {
     classify(gf(aCrimeSiteData.lat), gf(aCrimeSiteData.lng), 2)
 }
 
 function getBlockWithinDistance(distanceWithinAsKm) {
 
     directionsService = new google.maps.DirectionsService();
+    directionsRender = new google.maps.DirectionsRenderer();
 
     var list = []
 
@@ -239,14 +262,36 @@ function getBlockWithinDistance(distanceWithinAsKm) {
             directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     var sublist = [];
+
+                    var allGridsForThisLeg = []
+
                     for (var j = 0; j < response.routes[0].legs[0].steps.length; j++) {
+
+                        var startPoint = response.routes[0].legs[0].steps[j].start_point;
+                        var endPoint = response.routes[0].legs[0].steps[j].end_point;
+
                         sublist.push({
-                            start: response.routes[0].legs[0].steps[j].start_point,
-                            end: response.routes[0].legs[0].steps[j].end_point
+                            start: startPoint,
+                            end: endPoint
                         });
+
+                        var legGrid = getGridsThrough({"lat":startPoint.G, "lng":startPoint.K}, {"lat":endPoint.G, "lng":endPoint.K})
+                        // console.log("legGrid step" + j + ": " + JSON.stringify(legGrid))
+                        // console.log(startPoint + endPoint)
+
+                       allGridsForThisLeg = _.union(allGridsForThisLeg, legGrid)
+
                     }
+
+                    console.log("score: " + calculateScoreFromAllGrids(allGridsForThisLeg))
+                    directionsRender.setDirections(response)
+
+                    // console.log("All grid: " + allGridsForThisLeg)
+
                     list.push(sublist);
-                    console.log(JSON.stringify(list))
+                    // console.log(JSON.stringify(list))
+                } else {
+                    console.log('Google Maps route failed ' + status)
                 }
             });
         }
@@ -254,6 +299,34 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
 }
 
+function calculateScoreFromAllGrids(allGrids) {
+    var finalScore = 100
+    for (var i = 0; i < allGrids.length; i++) {
+        var key = allGrids[i]
+        if (!(key in grid)) {
+            console.log('key not found in grid')
+            return finalScore
+        } else {
+            var event = grid[key]["event"]
+            var traffic = grid[key]["traffic"]
+
+            var type1Count = 0
+            var type2Count = 0
+            for (var j = 0; j < event.length; j++) {
+                if (event[j]["type"] == '1') {
+                    type1Count++
+                } else {
+                    type2Count++
+                }
+            };
+
+            finalScore = finalScore - (3 * type2Count) - (1 * type1Count) - (3 * traffic)
+        }
+        
+        var score = grid[key]
+    };
+    return finalScore
+}
 
 //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
 function calcCrow(lat1, lon1, lat2, lon2) {
