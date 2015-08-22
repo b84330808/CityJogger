@@ -32,7 +32,7 @@ function initMap() {
 
     // Testing
     // drawLinesOnMap([aLocation(25.02, 121.534), aLocation(25.03, 121.534)], map)
-    drawCarDataOnMap(map)
+    // drawCarDataOnMap(carData, map)
 
     // Testing
     drawCrossRoadsMarkersOnMap(map)
@@ -98,9 +98,9 @@ function calcRoute(originLoc, destinationLoc, map) {
 }
 
 
-function drawCarDataOnMap(map) {
+function drawCarDataOnMap(liveCarData, map) {
 
-    var results = carData.result.results;
+    var results = liveCarData;
 
     for (var i = 0; i < results.length; i++) {
 
@@ -137,8 +137,22 @@ function drawCrossRoadsMarkersOnMap(map) {
 function getDataFromServer() {
     console.log('get server data')
     $.get('http://localhost:3000/getdata', function(result) {
-        console.log(result)
+        // console.log(result)
         console.log('sdfasdf')
-    })
 
+        result = JSON.parse(result)
+
+        var carsData = result.cars.data
+        var crime = result.crime.data
+        var park = result.park.data
+        var constructions = result.constructions.data
+        var uv = result.uv.data
+        var airquality = result.airquality.data
+
+        console.log("carsData: " + carsData)
+
+        drawCarDataOnMap(carsData, map)
+
+
+    })
 }

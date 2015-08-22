@@ -23,9 +23,9 @@ function getCars() {
             var speedLimit = 1;
             var temp = [];
             for (var i in datas.cars.data) {
-                if (datas.cars.data[i]['AvgOcc'] < speedLimit) {
-                    temp.push(datas.cars.data[i]);
-                }
+                // if (datas.cars.data[i]['AvgOcc'] < speedLimit) {
+                temp.push(datas.cars.data[i]);
+                // }
             }
             datas.cars.data = temp;
             //****preprocess end****//
@@ -74,32 +74,32 @@ function getAirQuality() {
         if (!error && response.statusCode == 200) {
             datas.airquality.data = (JSON.parse(body));
             for (var i in datas.airquality.data) {
-                if (datas.airquality.data[i]['SiteName']=='大同') {
-                      datas.airquality.data[i]['X'] = 121.5133346;
-                      datas.airquality.data[i]['Y'] = 25.0642905;
+                if (datas.airquality.data[i]['SiteName'] == '大同') {
+                    datas.airquality.data[i]['X'] = 121.5133346;
+                    datas.airquality.data[i]['Y'] = 25.0642905;
                 }
-                if (datas.airquality.data[i]['SiteName']=='松山') {
-                      datas.airquality.data[i]['X'] = 121.577663;
-                      datas.airquality.data[i]['Y'] = 25.0507885;
+                if (datas.airquality.data[i]['SiteName'] == '松山') {
+                    datas.airquality.data[i]['X'] = 121.577663;
+                    datas.airquality.data[i]['Y'] = 25.0507885;
                 }
-                if (datas.airquality.data[i]['SiteName']=='古亭') {
-                      datas.airquality.data[i]['X'] = 121.5274266;
-                      datas.airquality.data[i]['Y'] = 25.0216745;
+                if (datas.airquality.data[i]['SiteName'] == '古亭') {
+                    datas.airquality.data[i]['X'] = 121.5274266;
+                    datas.airquality.data[i]['Y'] = 25.0216745;
                 }
-                if (datas.airquality.data[i]['SiteName']=='萬華') {
-                      datas.airquality.data[i]['X'] = 121.5086063;
-                      datas.airquality.data[i]['Y'] = 25.0454165;
+                if (datas.airquality.data[i]['SiteName'] == '萬華') {
+                    datas.airquality.data[i]['X'] = 121.5086063;
+                    datas.airquality.data[i]['Y'] = 25.0454165;
                 }
-                if (datas.airquality.data[i]['SiteName']=='中山') {
-                      datas.airquality.data[i]['X'] = 121.5257455;
-                      datas.airquality.data[i]['Y'] = 25.0619756;
+                if (datas.airquality.data[i]['SiteName'] == '中山') {
+                    datas.airquality.data[i]['X'] = 121.5257455;
+                    datas.airquality.data[i]['Y'] = 25.0619756;
                 }
-                if (datas.airquality.data[i]['SiteName']=='士林') {
-                      datas.airquality.data[i]['X'] = 121.5147443;
-                      datas.airquality.data[i]['Y'] = 25.1059048;
+                if (datas.airquality.data[i]['SiteName'] == '士林') {
+                    datas.airquality.data[i]['X'] = 121.5147443;
+                    datas.airquality.data[i]['Y'] = 25.1059048;
                 }
             }
-                      // console.log(datas.airquality.data);
+            // console.log(datas.airquality.data);
             //console.log(datas.airquality.data);
         }
     });
