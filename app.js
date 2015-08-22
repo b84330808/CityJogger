@@ -5,6 +5,7 @@ var fs = require('fs');
 
 /**/
 var init = require('./init.js');
+var datas = require('./data.js');
 
 /**/
 var app = express();
@@ -16,6 +17,9 @@ app.get('/', function(req, res){
 	var data = fs.readFileSync('index.ejs', 'utf-8');
 
   	res.end(data);
+});
+app.get('/getdata', function(req, res){
+  	res.end(datas);
 });
 
 var data = require('./data.js');
