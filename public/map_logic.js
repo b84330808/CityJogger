@@ -197,7 +197,11 @@ function getDataFromServer() {
             addConstructionSiteToGrid(constructions[i])
         };
 
-        console.log(grid)
+        for (var i = 0; i < crime.length; i++) {
+            addCrimeSiteToGrid(crime[i])
+        };
+
+        console.log(JSON.stringify(grid))
     })
 }
 
@@ -210,7 +214,7 @@ function addConstructionSiteToGrid(aConstruction) {
     classify(gf(aConstruction.X), gf(aConstruction.Y), 1)
 }
 
-function addCrimeStieToGrid(aCrimeSiteData) {
+function addCrimeSiteToGrid(aCrimeSiteData) {
     classify(gf(aCrimeSiteData.lat), gf(aCrimeSiteData.lng), 2)
 }
 
