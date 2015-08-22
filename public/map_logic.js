@@ -22,7 +22,9 @@ function initMap() {
     navigator.geolocation.getCurrentPosition(function(position) {
         console.log(position)
 
-        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        // userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        userLocation = new google.maps.LatLng(25.015384309623297, 121.53891563415527)
+
 
         map.setCenter(userLocation);
         map.setZoom(14);
@@ -239,14 +241,30 @@ function getBlockWithinDistance(distanceWithinAsKm) {
             directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     var sublist = [];
+
+                    var allGridsForThisLeg = []
+
                     for (var j = 0; j < response.routes[0].legs[0].steps.length; j++) {
+
+                        var startPoint = response.routes[0].legs[0].steps[j].start_point;
+                        var endPoint = response.routes[0].legs[0].steps[j].end_point;
+
                         sublist.push({
-                            start: response.routes[0].legs[0].steps[j].start_point,
-                            end: response.routes[0].legs[0].steps[j].end_point
+                            start: startPoint,
+                            end: endPoint
                         });
+
+                        var legGrid = getGridsThrough({"lat":startPoint.G, "lng":startPoint.K}, {"lat":endPoint.G, "lng":endPoint.K})
+                        // console.log("legGrid step" + j + ": " + JSON.stringify(legGrid))
+                        // console.log(startPoint + endPoint)
+
+                       allGridsForThisLeg = _.union(allGridsForThisLeg, legGrid)
                     }
+
+                    console.log("Al grid: " + allGridsForThisLeg)
+
                     list.push(sublist);
-                    console.log(JSON.stringify(list))
+                    // console.log(JSON.stringify(list))
                 }
             });
         }
