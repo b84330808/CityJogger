@@ -63,6 +63,7 @@ function aMapsLatLng(lat, lng) {
     return new google.maps.LatLng(lat, lng)
 }
 
+// ==== Basic helper ====
 function drawLinesOnMap(path, map, color) {
     var lines = new google.maps.Polyline({
         path: path,
@@ -97,6 +98,33 @@ function calcRoute(originLoc, destinationLoc, map) {
     });
 }
 
+function drawAMakerOnMap(coordsStringArray, map, title, image) {
+    var latLng = aLocation(parseFloat(coordsStringArray[0]), parseFloat(coordsStringArray[1]));
+
+    var marker = new google.maps.Marker({
+        position: latLng,
+        map: map,
+        title: title,
+        icon:image
+    });
+
+
+}
+
+// ==== Draw events ====
+function drawCrossRoadMarkerOnMap(coordsStringArray, map) {
+
+    drawAMakerOnMap(coordsStringArray, map, '交叉路口', '')
+
+}
+
+function drawCrossRoadsMarkersOnMap(map) {
+
+    for (var i = 0; i < cross_road_data.length; i++) {
+        drawCrossRoadMarkerOnMap(cross_road_data[i], map)
+    };
+
+}
 
 function drawCarDataOnMap(liveCarData, map) {
 
@@ -114,31 +142,19 @@ function drawCarDataOnMap(liveCarData, map) {
 
 }
 
-function drawAMakerOnMap(coordsStringArray, map) {
-
-    var myLatLng = aLocation(parseFloat(coordsStringArray[0]), parseFloat(coordsStringArray[1]));
-
-    var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: '交叉路口'
-    });
-
-}
-
-function drawCrossRoadsMarkersOnMap(map) {
-
-    for (var i = 0; i < cross_road_data.length; i++) {
-        drawAMakerOnMap(cross_road_data[i], map)
+function drawConstructionSiteOnMap(constructionData, map) {
+    
+    for (var i = 0; i < constructionData.length; i++) {
+        drawAMakerOnMap()
     };
 
 }
 
+// ==== Get Live Data ====
 function getDataFromServer() {
     console.log('get server data')
     $.get('http://localhost:3000/getdata', function(result) {
         // console.log(result)
-        console.log('sdfasdf')
 
         result = JSON.parse(result)
 
@@ -149,7 +165,7 @@ function getDataFromServer() {
         var uv = result.uv.data
         var airquality = result.airquality.data
 
-        console.log("carsData: " + carsData)
+        // console.log("carsData: " + carsData)
 
         drawCarDataOnMap(carsData, map)
 
