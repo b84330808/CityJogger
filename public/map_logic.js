@@ -68,8 +68,8 @@ function drawLinesOnMap(path, map, color) {
         path: path,
         geodesic: true,
         strokeColor: color,
-        strokeOpacity: 1.0,
-        strokeWeight: 2
+        strokeOpacity: 0.7,
+        strokeWeight: 4
     });
     lines.setMap(map);
 }
@@ -104,9 +104,9 @@ function drawCarDataOnMap(map) {
 
     for (var i = 0; i < results.length; i++) {
 
-        var color = "#008000"
+        var color = "#3eb076" // green
         if (parseFloat(results[i].AvgOcc) > 7) {
-            color = "#FF0000"
+            color = "#bb3d15"
         } 
 
         drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
