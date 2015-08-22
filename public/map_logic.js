@@ -114,7 +114,7 @@ function drawAMakerOnMap(coordsStringArray, map, title, image) {
 // ==== Draw events ====
 function drawCrossRoadMarkerOnMap(coordsStringArray, map) {
 
-    drawAMakerOnMap(coordsStringArray, map, '交叉路口', '/static/img/cir 3.png')
+    drawAMakerOnMap(coordsStringArray, map, '交叉路口', '/static/img/cir3.png')
 
 }
 
@@ -185,4 +185,51 @@ function getDataFromServer() {
         drawCrimeSiteOnMap(crime, map)
 
     })
+}
+
+/**/
+function getRoutes(km){
+    navigator.geolocation.getCurrentPosition(function(position) {
+        directionsService = new google.maps.DirectionsService();
+        var list = [];
+
+        for(var i = 0; i < cross_road_data.length; i++){
+            if(GetDistance(position.coords.latitude, position.coords.longitude, parseFloat(cross_road_data[i][0], parseFloat(cross_road_data[i][1])) <= 5){
+
+                var request = {
+                    origin: aMapsLatLng(position.coords.latitude, position.coords.longitude),
+                    destination: aMapsLatLng(parseFloat(cross_road_data[i][0], parseFloat(cross_road_data[i][1]),
+                    optimizeWaypoints: true,
+                    travelMode: google.maps.TravelMode.WALKING
+                }
+
+                directionsService.route(request, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        var sublist = [];
+                        for(var j = 0; j < response.routes[0].legs[0].steps.length; j++){
+                            sublist.push({
+                                lat: response.routes[0].legs[0].steps[j].G,
+                                lat: response.routes[0].legs[0].steps[j].K
+                            });
+                        }
+                        list.push(sublist);
+                    }
+                });
+            }
+        }
+    });
+}
+
+/**/
+function GetDistance( lat1,  lng1,  lat2,  lng2){
+
+    var radLat1 = rad(lat1);
+    var radLat2 = rad(lat2);
+    var a = radLat1 - radLat2;
+    var b = rad(lng1) - rad(lng2);
+    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+    s = s * 6378.137 ;// EARTH_RADIUS;
+    // s = Math.round(s * 10000) / 10000;
+    return s;
 }
