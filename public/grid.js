@@ -69,11 +69,11 @@ function retrieveNearX(lat, lng) {
 */
 
 // classifyLine({
-//     'lat': 120,
-//     'lng': 20
+//     'lat': 21,
+//     'lng': 127
 // }, {
-//     'lat': 123,
-//     'lng': 25
+//     'lat': 15,
+//     'lng': 123
 // }, 50)
 
 // classifyLine({
@@ -93,6 +93,11 @@ function retrieveNearX(lat, lng) {
 // }, 77)
 
 function classifyLine(source, destination, traffic) {
+    if (source.lng > destination.lng) {
+        var temp = destination;
+        destination = source;
+        source = temp;
+    };
     var s = {};
     var d = {};
     s['x'] = source.lng;
@@ -118,7 +123,7 @@ function classifyLine(source, destination, traffic) {
         if (traffic > grid[c_lat + '_' + c_lng]['traffic']) {
             grid[c_lat + '_' + c_lng]['traffic'] = traffic;
         }
-
+        /////////////////*****************num need to be discuss 
         var num = 0.5;
         s['x'] += num;
         s['y'] += num * slope;
@@ -138,3 +143,5 @@ function classifyLine(source, destination, traffic) {
         grid[c_lat + '_' + c_lng]['traffic'] = traffic;
     }
 }
+
+//console.log(grid);
