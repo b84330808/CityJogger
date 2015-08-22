@@ -114,7 +114,7 @@ function drawAMakerOnMap(coordsStringArray, map, title, image) {
 // ==== Draw events ====
 function drawCrossRoadMarkerOnMap(coordsStringArray, map) {
 
-    drawAMakerOnMap(coordsStringArray, map, '交叉路口', '')
+    drawAMakerOnMap(coordsStringArray, map, '交叉路口', '/static/img/cir 3.png')
 
 }
 
@@ -150,6 +150,12 @@ function drawConstructionSiteOnMap(constructionData, map) {
 
 }
 
+function drawCrimeSiteOnMap(crimeData, map) {
+    for (var i = 0; i < crimeData.length; i++) {
+        drawAMakerOnMap([crimeData[i].lat, crimeData[i].lng], map, '常犯罪地點', '/static/img/danger_small.png')
+    };
+
+}
 
 
 // ==== Get Live Data ====
@@ -171,6 +177,7 @@ function getDataFromServer() {
 
         drawCarDataOnMap(carsData, map)
         drawConstructionSiteOnMap(constructions, map)
+        drawCrimeSiteOnMap(crime, map)
 
     })
 }
