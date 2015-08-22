@@ -27,6 +27,7 @@ var lng_digit = 3;
 
 //     ]
 // };
+var base = 100
 
 var grid = {};
 
@@ -40,8 +41,9 @@ classify(25.133788, 121.7679798);
 classify(25.233788, 121.1679798);
 
 function classify(lat, lng, type) {
-    var c_lat = Math.floor(lat * 1000) / 1000;
-    var c_lng = Math.floor(lng * 1000) / 1000;
+
+    var c_lat = Math.floor(lat * base) / base;
+    var c_lng = Math.floor(lng * base) / base;
 
 
     if (!((c_lat + '_' + c_lng) in grid)) {
@@ -59,8 +61,8 @@ function classify(lat, lng, type) {
 }
 
 function retrieveNearX(lat, lng) {
-    var c_lat = Math.floor(lat * 1000) / 1000;
-    var c_lng = Math.floor(lng * 1000) / 1000;
+    var c_lat = Math.floor(lat * base) / base;
+    var c_lng = Math.floor(lng * base) / base;
     return grid[c_lat + '_' + c_lng];
 }
 ////////////////////////////////////////////////////////////
