@@ -187,6 +187,19 @@ function getDataFromServer() {
     })
 }
 
+function gf(string) {
+    return parseFloat(string)
+}
+
+// Type: Construction: 1, Crime: 2, 
+function addConstructionSiteToGrid(aConstruction) {
+    classify(gf(aConstruction.X), gf(aConstruction.Y), 1)
+}
+
+function addCrimeStieToGrid(aCrimeSiteData) {
+    classify(gf(aCrimeSiteData.lat), gf(aCrimeSiteData.lng), 2)
+}
+
 /**/
 function getRoutes(km){
     navigator.geolocation.getCurrentPosition(function(position) {
