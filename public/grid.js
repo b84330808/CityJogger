@@ -1,7 +1,3 @@
-var lat_digit = 3;
-var lng_digit = 3;
-
-
 // var grid = {
 //     "25.123_121.567": {
 //         'event': [{
@@ -27,23 +23,21 @@ var lng_digit = 3;
 
 //     ]
 // };
-var base = 100
 
 var grid = {};
 
-classify(25.033788, 121.567978);
-classify(25.0337889, 121.566978);
-classify(25.03378888, 122.567978);
-classify(25.033788, 121.5679798);
-classify(25.03788, 121.5679798);
-classify(25.133788, 121.5479798);
-classify(25.133788, 121.7679798);
-classify(25.233788, 121.1679798);
+// classify(25.033788, 121.567978);
+// classify(25.0337889, 121.566978);
+// classify(25.03378888, 122.567978);
+// classify(25.033788, 121.5679798);
+// classify(25.03788, 121.5679798);
+// classify(25.133788, 121.5479798);
+// classify(25.133788, 121.7679798);
+// classify(25.233788, 121.1679798);
 
 function classify(lat, lng, type) {
-
-    var c_lat = Math.floor(lat * base) / base;
-    var c_lng = Math.floor(lng * base) / base;
+    var c_lat = Math.floor(lat * 1000) / 1000;
+    var c_lng = Math.floor(lng * 1000) / 1000;
 
 
     if (!((c_lat + '_' + c_lng) in grid)) {
@@ -61,42 +55,42 @@ function classify(lat, lng, type) {
 }
 
 function retrieveNearX(lat, lng) {
-    var c_lat = Math.floor(lat * base) / base;
-    var c_lng = Math.floor(lng * base) / base;
+    var c_lat = Math.floor(lat * 1000) / 1000;
+    var c_lng = Math.floor(lng * 1000) / 1000;
     return grid[c_lat + '_' + c_lng];
 }
 ////////////////////////////////////////////////////////////
 /*
-	source and destination format 
-	{
-		lat:22.123151
-		lng:121.15614
-	}
+    source and destination format 
+    {
+        lat:22.123151
+        lng:121.15614
+    }
 */
 
-classifyLine({
-    'lat': 120,
-    'lng': 20
-}, {
-    'lat': 123,
-    'lng': 25
-}, 50)
+// classifyLine({
+//     'lat': 120,
+//     'lng': 20
+// }, {
+//     'lat': 123,
+//     'lng': 25
+// }, 50)
 
-classifyLine({
-    'lat': 120,
-    'lng': 20
-}, {
-    'lat': 123,
-    'lng': 25
-}, 88)
+// classifyLine({
+//     'lat': 120,
+//     'lng': 20
+// }, {
+//     'lat': 123,
+//     'lng': 25
+// }, 88)
 
-classifyLine({
-    'lat': 120,
-    'lng': 20
-}, {
-    'lat': 123,
-    'lng': 25
-}, 77)
+// classifyLine({
+//     'lat': 120,
+//     'lng': 20
+// }, {
+//     'lat': 123,
+//     'lng': 25
+// }, 77)
 
 function classifyLine(source, destination, traffic) {
     var s = {};
@@ -143,6 +137,4 @@ function classifyLine(source, destination, traffic) {
     if (traffic > grid[c_lat + '_' + c_lng]['traffic']) {
         grid[c_lat + '_' + c_lng]['traffic'] = traffic;
     }
-    //console.log(set);
 }
-
