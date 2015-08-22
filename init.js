@@ -1,11 +1,16 @@
 /*  */
 var request = require('request');
+var fs = require('fs');
 var datas = require('./data.js');
 
+/* dynamic */
 getCars();
 getConstructions();
 getUV();
 getAirQuality();
+/* static */
+getCrime();
+getPark();
 
 
 /**/
@@ -71,9 +76,6 @@ function getAirQuality(){
 	setTimeout(getAirQuality, datas.airquality.updateInterval);
 }
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////
 function twd97_to_latlng($x, $y) {
   var pow = Math.pow, M_PI = Math.PI;
@@ -123,4 +125,15 @@ function twd97_to_latlng($x, $y) {
     lat: $lat,
     lng: $lng
   };
+  
+function getCrime(){
+	fs.readFile(datas.crime.url, function(err, data){
+		datas.crime.data = data;
+	});
+}
+
+function getPark(){
+	fs.readFile(datas.park.url, function(err, data){
+		datas.park.data = data;
+	});
 }
