@@ -32,6 +32,9 @@ function initMap() {
         // Testing
         // calcRoute(userLocation, aMapsLatLng(25.1, 121.56), map)
 
+        // Testing 
+        getBlockWithinDistance(1.5)
+
     });
 
     // Testing
@@ -109,7 +112,7 @@ function drawAMakerOnMap(coordsStringArray, map, title, image) {
         position: latLng,
         map: map,
         title: title,
-        icon:image
+        icon: image
     });
 
 
@@ -139,7 +142,7 @@ function drawCarDataOnMap(liveCarData, map) {
         var color = "#3eb076" // green
         if (parseFloat(results[i].AvgOcc) > 7) {
             color = "#bb3d15"
-        } 
+        }
 
         drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
     };
@@ -147,7 +150,7 @@ function drawCarDataOnMap(liveCarData, map) {
 }
 
 function drawConstructionSiteOnMap(constructionData, map) {
-    
+
     for (var i = 0; i < constructionData.length; i++) {
         drawAMakerOnMap([constructionData[i].X, constructionData[i].Y], map, '施工地點', '/static/img/construction_small.png')
     };
@@ -209,49 +212,65 @@ function addCrimeStieToGrid(aCrimeSiteData) {
     classify(gf(aCrimeSiteData.lat), gf(aCrimeSiteData.lng), 2)
 }
 
-/**/
-function getRoutes(km){
-    navigator.geolocation.getCurrentPosition(function(position) {
-        directionsService = new google.maps.DirectionsService();
-        var list = [];
+function getBlockWithinDistance(distanceWithinAsKm) {
 
-        for(var i = 0; i < cross_road_data.length; i++){
-            if(GetDistance(position.coords.latitude, position.coords.longitude, parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])) <= km) {
+    directionsService = new google.maps.DirectionsService();
 
-                var request = {
-                    origin: aMapsLatLng(position.coords.latitude, position.coords.longitude),
-                    destination: aMapsLatLng(parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])),
-                    optimizeWaypoints: true,
-                    travelMode: google.maps.TravelMode.WALKING
-                }
+    var list = []
 
-                directionsService.route(request, function(response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        var sublist = [];
-                        for(var j = 0; j < response.routes[0].legs[0].steps.length; j++){
-                            sublist.push({
-                                lat: response.routes[0].legs[0].steps[j].G,
-                                lat: response.routes[0].legs[0].steps[j].K
-                            });
-                        }
-                        list.push(sublist);
-                    }
-                });
+    for (var i = 0; i < cross_road_data.length; i++) {
+
+        var itsDistance = calcCrow(userLocation.lat(), userLocation.lng(), parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1]));
+
+        if (itsDistance <= distanceWithinAsKm) {
+            console.log('smaller')
+
+            console.log()
+
+            // drawAMakerOnMap([cross_road_data[i][0], cross_road_data[i][1]], map, 'Smaller', '')
+
+            var request = {
+                origin: aMapsLatLng(userLocation.lat(), userLocation.lng()),
+                destination: aMapsLatLng(parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])),
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.WALKING
             }
+
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    var sublist = [];
+                    for (var j = 0; j < response.routes[0].legs[0].steps.length; j++) {
+                        sublist.push({
+                            start: response.routes[0].legs[0].steps[j].start_point,
+                            end: response.routes[0].legs[0].steps[j].end_point
+                        });
+                    }
+                    list.push(sublist);
+                    console.log(JSON.stringify(list))
+                }
+            });
         }
-    });
+    };
+
 }
 
-/**/
-function GetDistance( lat1,  lng1,  lat2,  lng2){
 
-    var radLat1 = rad(lat1);
-    var radLat2 = rad(lat2);
-    var a = radLat1 - radLat2;
-    var b = rad(lng1) - rad(lng2);
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
-    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
-    s = s * 6378.137 ;// EARTH_RADIUS;
-    // s = Math.round(s * 10000) / 10000;
-    return s;
+//This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+function calcCrow(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km
+    var dLat = toRad(lat2 - lat1);
+    var dLon = toRad(lon2 - lon1);
+    var lat1 = toRad(lat1);
+    var lat2 = toRad(lat2);
+
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d;
+}
+
+// Converts numeric degrees to radians
+function toRad(Value) {
+    return Value * Math.PI / 180;
 }
