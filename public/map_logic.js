@@ -145,10 +145,12 @@ function drawCarDataOnMap(liveCarData, map) {
 function drawConstructionSiteOnMap(constructionData, map) {
     
     for (var i = 0; i < constructionData.length; i++) {
-        drawAMakerOnMap()
+        drawAMakerOnMap([constructionData[i].X, constructionData[i].Y], map, '施工地點', '/static/img/construction_small.png')
     };
 
 }
+
+
 
 // ==== Get Live Data ====
 function getDataFromServer() {
@@ -168,7 +170,7 @@ function getDataFromServer() {
         // console.log("carsData: " + carsData)
 
         drawCarDataOnMap(carsData, map)
-
+        drawConstructionSiteOnMap(constructions, map)
 
     })
 }
