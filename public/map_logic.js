@@ -37,6 +37,8 @@ function initMap() {
     // Testing
     drawCrossRoadsMarkersOnMap(map)
 
+    // Testing
+    getDataFromServer()
 }
 
 function addUserMarker(location, map) {
@@ -129,5 +131,14 @@ function drawCrossRoadsMarkersOnMap(map) {
     for (var i = 0; i < cross_road_data.length; i++) {
         drawAMakerOnMap(cross_road_data[i], map)
     };
+
+}
+
+function getDataFromServer() {
+    console.log('get server data')
+    $.get('http://localhost:3000/getdata', function(result) {
+        console.log(result)
+        console.log('sdfasdf')
+    })
 
 }

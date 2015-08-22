@@ -99,7 +99,7 @@ function getAirQuality() {
                       datas.airquality.data[i]['Y'] = 25.1059048;
                 }
             }
-                      console.log(datas.airquality.data);
+                      // console.log(datas.airquality.data);
             //console.log(datas.airquality.data);
         }
     });

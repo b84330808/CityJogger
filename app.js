@@ -14,17 +14,16 @@ var server = http.createServer(app).listen(process.env.PORT || 3000);
 /**/
 app.use('/static',  express.static('public'));
 app.get('/', function(req, res){
-	var data = fs.readFileSync('index.ejs', 'utf-8');
+	var data = fs.readFileSync('index.html', 'utf-8');
 
   	res.end(data);
 });
 app.get('/getdata', function(req, res){
-	console.log(JSON.stringify(datas))
   	res.end(JSON.stringify(datas));
 });
 
 var data = require('./data.js');
 
 setTimeout(function(){
-	console.log(data.constructions);
+	// console.log(data.constructions);
 }, 10000);
