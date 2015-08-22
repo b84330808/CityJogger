@@ -61,11 +61,11 @@ function aMapsLatLng(lat, lng) {
     return new google.maps.LatLng(lat, lng)
 }
 
-function drawLinesOnMap(path, map) {
+function drawLinesOnMap(path, map, color) {
     var lines = new google.maps.Polyline({
         path: path,
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: color,
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
@@ -101,7 +101,13 @@ function drawCarDataOnMap(map) {
     var results = carData.result.results;
 
     for (var i = 0; i < results.length; i++) {
-        drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map)
+
+        var color = "#008000"
+        if (parseFloat(results[i].AvgOcc) > 7) {
+            color = "#FF0000"
+        } 
+
+        drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
     };
 
 }
@@ -109,8 +115,6 @@ function drawCarDataOnMap(map) {
 function drawAMakerOnMap(coordsStringArray, map) {
 
     var myLatLng = aLocation(parseFloat(coordsStringArray[0]), parseFloat(coordsStringArray[1]));
-
-    console.log(myLatLng)
 
     var marker = new google.maps.Marker({
         position: myLatLng,
