@@ -151,6 +151,15 @@ function drawCarDataOnMap(liveCarData, map) {
 
 }
 
+// 
+function addCarsDataToGridLine(aLiveCarData) {
+    var startLng = parseFloat(aLiveCarData.StartWgsY)
+    var startLat = parseFloat(aLiveCarData.StartWgsX)
+    var endLng = parseFloat(aLiveCarData.EndWgsY)
+    var endLat = parseFloat(aLiveCarData.EndWgsX)
+    classifyLine({lat:startLat, lng:startLng}, {lat:endLat, lng:endLng}, parseFloat(aLiveCarData.AvgOcc))
+}
+
 function drawConstructionSiteOnMap(constructionData, map) {
 
     for (var i = 0; i < constructionData.length; i++) {
@@ -199,6 +208,10 @@ function getDataFromServer() {
 
         for (var i = 0; i < crime.length; i++) {
             addCrimeSiteToGrid(crime[i])
+        };
+
+        for (var i = 0; i < carsData.length; i++) {
+            addCarsDataToGridLine(carsData[i])
         };
 
         console.log(JSON.stringify(grid))
@@ -265,7 +278,7 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                        allGridsForThisLeg = _.union(allGridsForThisLeg, legGrid)
                     }
 
-                    console.log("Al grid: " + allGridsForThisLeg)
+                    // console.log("All grid: " + allGridsForThisLeg)
 
                     list.push(sublist);
                     // console.log(JSON.stringify(list))
