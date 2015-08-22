@@ -1,14 +1,14 @@
-// var s = {
-//     'lat': 22,
-//     'lng': 121
-// }
+var s = {
+    'lat': 25.0152285,
+    'lng': 121.5389394
+}
 
-// var t = {
-//     'lat': 24,
-//     'lng': 125
-// }
+var t = {
+    'lat': 25.0152579,
+    'lng': 121.538295
+}
 
-// console.log(getGridsThrough(t, s));
+console.log(getGridsThrough(t, s));
 
 function getGridsThrough(source, destination) {
     if (source.lng > destination.lng) {
