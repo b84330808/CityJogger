@@ -27,12 +27,15 @@ function initMap() {
 
         // Testing
         // calcRoute(userLocation, aMapsLatLng(25.1, 121.56), map)
+
     });
 
     // Testing
     // drawLinesOnMap([aLocation(25.02, 121.534), aLocation(25.03, 121.534)], map)
-    // getCarData(map)
-    parseCrossData()
+    drawCarDataOnMap(map)
+
+    // Testing
+    drawCrossRoadsMarkersOnMap(map)
 
 }
 
@@ -93,7 +96,7 @@ function calcRoute(originLoc, destinationLoc, map) {
 }
 
 
-function getCarData(map) {
+function drawCarDataOnMap(map) {
 
     var results = carData.result.results;
 
@@ -103,18 +106,24 @@ function getCarData(map) {
 
 }
 
-function parseCrossData() {
+function drawAMakerOnMap(coordsStringArray, map) {
 
-    var geoCoder = new google.maps.Geocoder()
-    geoCoder.geocode({"address":"台北市大安區敦化南路一段190巷38號"}, function(result, status) {
-        console.log(result)
+    var myLatLng = aLocation(parseFloat(coordsStringArray[0]), parseFloat(coordsStringArray[1]));
+
+    console.log(myLatLng)
+
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: '交叉路口'
     });
 
 }
 
+function drawCrossRoadsMarkersOnMap(map) {
 
+    for (var i = 0; i < cross_road_data.length; i++) {
+        drawAMakerOnMap(cross_road_data[i], map)
+    };
 
-
-
-
-
+}
