@@ -32,11 +32,11 @@ function getGridsThrough(source, destination) {
     while (s['x'] < d['x']) {
         var x = s['x'].toFixed(num);
         var y = s['y'].toFixed(num);
-        if (grids.indexOf(x + '_' + y) == -1) {
-            grids.push(x + '_' + y);
+        if (grids.indexOf(y + '_' + x) == -1) {
+            grids.push(y + '_' + x);
         }
-        if (grids.indexOf((x - gridWidth).toFixed(num) + '_' + y) == -1) {
-            grids.push((x - gridWidth).toFixed(num) + '_' + y);
+        if (grids.indexOf(y + '_' + (x - gridWidth).toFixed(num)) == -1) {
+            grids.push(y + '_' + (x - gridWidth).toFixed(num));
         }
 
         s['x'] += gridWidth;

@@ -158,7 +158,13 @@ function addCarsDataToGridLine(aLiveCarData) {
     var startLat = parseFloat(aLiveCarData.StartWgsX)
     var endLng = parseFloat(aLiveCarData.EndWgsY)
     var endLat = parseFloat(aLiveCarData.EndWgsX)
-    classifyLine({lat:startLat, lng:startLng}, {lat:endLat, lng:endLng}, parseFloat(aLiveCarData.AvgOcc))
+    classifyLine({
+        lat: startLat,
+        lng: startLng
+    }, {
+        lat: endLat,
+        lng: endLng
+    }, parseFloat(aLiveCarData.AvgOcc))
 }
 
 function drawConstructionSiteOnMap(constructionData, map) {
@@ -275,11 +281,17 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                             end: endPoint
                         });
 
-                        var legGrid = getGridsThrough({"lat":startPoint.G, "lng":startPoint.K}, {"lat":endPoint.G, "lng":endPoint.K})
-                        // console.log("legGrid step" + j + ": " + JSON.stringify(legGrid))
-                        // console.log(startPoint + endPoint)
+                        var legGrid = getGridsThrough({
+                                "lat": startPoint.G,
+                                "lng": startPoint.K
+                            }, {
+                                "lat": endPoint.G,
+                                "lng": endPoint.K
+                            })
+                            // console.log("legGrid step" + j + ": " + JSON.stringify(legGrid))
+                            // console.log(startPoint + endPoint)
 
-                       allGridsForThisLeg = _.union(allGridsForThisLeg, legGrid)
+                        allGridsForThisLeg = _.union(allGridsForThisLeg, legGrid)
 
                     }
 
@@ -300,18 +312,19 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 }
 
 function calculateScoreFromAllGrids(allGrids) {
-    var finalScore = 100
+    var finalScore = 100;
+    //console.log('grid:',grid);
+    //console.log('allGrids',allGrids);
     for (var i = 0; i < allGrids.length; i++) {
-        var key = allGrids[i]
+        var key = allGrids[i];
         if (!(key in grid)) {
-            console.log('key not found in grid')
-            return finalScore
+            //console.log('key not found in grid')
         } else {
-            var event = grid[key]["event"]
-            var traffic = grid[key]["traffic"]
+            var event = grid[key]["event"];
+            var traffic = grid[key]["traffic"];
 
-            var type1Count = 0
-            var type2Count = 0
+            var type1Count = 0;
+            var type2Count = 0;
             for (var j = 0; j < event.length; j++) {
                 if (event[j]["type"] == '1') {
                     type1Count++
@@ -322,7 +335,7 @@ function calculateScoreFromAllGrids(allGrids) {
 
             finalScore = finalScore - (3 * type2Count) - (1 * type1Count) - (3 * traffic)
         }
-        
+
         var score = grid[key]
     };
     return finalScore

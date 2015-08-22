@@ -144,4 +144,4 @@ function classifyLine(source, destination, traffic) {
     }
 }
 
-//console.log(grid);
+console.log('hahahah',grid);
