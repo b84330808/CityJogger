@@ -28,7 +28,7 @@ function getGridsThrough(source, destination) {
     var grids = [];
 
     /////////////////*****************num need to be discuss 
-    var gridWidth = 0.03;
+    var gridWidth = 0.001;
     while (s['x'] < d['x']) {
         var x = s['x'].toFixed(num);
         var y = s['y'].toFixed(num);
