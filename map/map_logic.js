@@ -31,7 +31,8 @@ function initMap() {
 
     // Testing
     // drawLinesOnMap([aLocation(25.02, 121.534), aLocation(25.03, 121.534)], map)
-    getCarData(map)
+    // getCarData(map)
+    parseCrossData()
 
 }
 
@@ -96,14 +97,24 @@ function getCarData(map) {
 
     var results = carData.result.results;
 
-    // drawLinesOnMap([aLocation(parseFloat(results[3].StartWgsY), parseFloat(results[3].StartWgsX)), aLocation(parseFloat(aLocation.EndWgsY), parseFloat(results[i].EndWgsX))], map);
-
-
-    // console.log(parseFloat(results[3].StartWgsX))
-
     for (var i = 0; i < results.length; i++) {
         drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map)
     };
 
+}
+
+function parseCrossData() {
+
+    var geoCoder = new google.maps.Geocoder()
+    geoCoder.geocode({"address":"台北市大安區敦化南路一段190巷38號"}, function(result, status) {
+        console.log(result)
+    });
 
 }
+
+
+
+
+
+
+
