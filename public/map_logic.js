@@ -2,6 +2,9 @@ var map;
 var userLocation;
 var userMarker;
 
+var candidateLegs = []
+var currentHighestScore = 0
+
 $(function() {
     console.log("Document is ready!");
 });
@@ -250,9 +253,6 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
     var list = []
 
-    var candidateLegs = []
-    var currentHighestScore = 0
-
     for (var i = 0; i < cross_road_data.length; i++) {
 
         var itsDistance = calcCrow(userLocation.lat(), userLocation.lng(), parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1]));
@@ -414,7 +414,49 @@ function toRad(Value) {
 }
 
 // Button action
-function changeRoute() {
-    console.log('adfasdflllll')
-}
+var goodLegsIndexes = []
+var currentLegIndex;
 
+function changeRoute() {
+    console.log('Change route');
+
+    goodLegsIndexes = []
+
+    for (var i = 0; i < candidateLegs.length; i++) {
+        if (candidateLegs[i].score == 100) {
+            goodLegsIndexes.push(i)
+        }
+
+        for (var j = 0; j < candidateLegs[i].polylines.length; j++) {
+            if (candidateLegs[i].polylines[j].map != null) {
+                currentLegIndex = i
+                break;
+            }
+        }
+    };
+
+    console.log("hahasf: " + goodLegsIndexes + "+ " + currentLegIndex)
+
+    for (var i = 0; i < candidateLegs[currentLegIndex].polylines.length; i++) {
+        candidateLegs[currentLegIndex].polylines[i].setMap(null)
+    };
+
+    for (var i = 0; i < goodLegsIndexes.length; i++) {
+        if (goodLegsIndexes[i] != currentLegIndex) {
+            for (var j = 0; j < candidateLegs[i].polylines.length; j++) {
+                candidateLegs[i].polylines[j].setMap(map)
+            };
+            break;
+        }
+    };
+
+
+    // for (var j = 0; j < candidateLegs[i].polylines.length; j++) {
+
+    //                 candidateLegs[i].polylines[j].setMap(null)
+    //             } else {
+    //                 candidateLegs[i].polylines[j].setMap(map)
+    //             }
+    //         };
+
+}
