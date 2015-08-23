@@ -29,8 +29,14 @@ function initMap() {
         console.log(position)
 
         // userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        // 台大
         // userLocation = new google.maps.LatLng(25.015384309623297, 121.53891563415527)
-        userLocation = new google.maps.LatLng(25.033661079435696, 121.51153564453125)
+        // 西區
+        // userLocation = new google.maps.LatLng(25.033661079435696, 121.51153564453125) 
+        // 國父紀念館
+        // userLocation = new google.maps.LatLng(25.039493518078082, 121.552734375) 
+        // 長春路
+        userLocation = new google.maps.LatLng(25.056444898251087, 121.5483570098877)
 
 
         map.setCenter(userLocation);
@@ -42,7 +48,7 @@ function initMap() {
         // calcRoute(userLocation, aMapsLatLng(25.1, 121.56), map)
 
         // Testing 
-        getBlockWithinDistance(1.5)
+        getBlockWithinDistance(2)
 
     });
 
@@ -435,7 +441,7 @@ function changeRoute() {
     goodLegsIndexes = []
 
     for (var i = 0; i < candidateLegs.length; i++) {
-        if (candidateLegs[i].score == 100) {
+        if (candidateLegs[i].score > 80) {
             goodLegsIndexes.push(i)
         }
 
