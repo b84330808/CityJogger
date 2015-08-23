@@ -19,6 +19,9 @@ function initMap() {
         console.log(event.latLng.lat() + ", " + event.latLng.lng())
     });
 
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+        document.getElementById('alternative'));
+
     navigator.geolocation.getCurrentPosition(function(position) {
         console.log(position)
 
@@ -45,7 +48,7 @@ function initMap() {
     // drawCarDataOnMap(carData, map)
 
     // Testing
-    drawCrossRoadsMarkersOnMap(map)
+    // drawCrossRoadsMarkersOnMap(map)
 
     // Testing
     getDataFromServer()
@@ -309,7 +312,7 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                     if (itsScore >= currentHighestScore) {
                         currentHighestScore = itsScore
                         console.log('Current highest score: ' + currentHighestScore)
-                        // Remove all polylines
+                            // Remove all polylines
                         for (var k = 0; k < candidateLegs.length; k++) {
                             for (var h = 0; h < candidateLegs[k].polylines.length; h++) {
                                 candidateLegs[k].polylines[h].setMap(null);
@@ -330,8 +333,8 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                             path: thePath,
                             geodesic: true,
                             strokeColor: "#7bacfa",
-                            strokeOpacity: 0.7,
-                            strokeWeight: 4
+                            strokeOpacity: 1,
+                            strokeWeight: 6
                         });
 
                         if (itsScore == currentHighestScore) {
@@ -339,7 +342,7 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                         } else {
                             lines.setMap(null);
                         }
-                        
+
                         scoreAndLeg.polylines.push(lines)
                     };
 
@@ -409,3 +412,9 @@ function calcCrow(lat1, lon1, lat2, lon2) {
 function toRad(Value) {
     return Value * Math.PI / 180;
 }
+
+// Button action
+function changeRoute() {
+    console.log('adfasdflllll')
+}
+
