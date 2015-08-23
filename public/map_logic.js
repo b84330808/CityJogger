@@ -36,11 +36,11 @@ function initMap() {
         // 台大
         // userLocation = new google.maps.LatLng(25.015384309623297, 121.53891563415527)
         // 西區
-        // userLocation = new google.maps.LatLng(25.033661079435696, 121.51153564453125) 
+        userLocation = new google.maps.LatLng(25.033661079435696, 121.51153564453125) 
         // 國父紀念館
         // userLocation = new google.maps.LatLng(25.039493518078082, 121.552734375) 
         // 長春路
-        userLocation = new google.maps.LatLng(25.056444898251087, 121.5483570098877)
+        // userLocation = new google.maps.LatLng(25.056444898251087, 121.5483570098877)
 
 
         map.setCenter(userLocation);
@@ -61,7 +61,7 @@ function initMap() {
     // drawCarDataOnMap(carData, map)
 
     // Testing
-    drawCrossRoadsMarkersOnMap(map)
+    // drawCrossRoadsMarkersOnMap(map)
 
     // Testing
     getDataFromServer()
@@ -166,7 +166,7 @@ function drawCarDataOnMap(liveCarData, map) {
         if (calcCrow(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX), parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX)) < 8) {
             drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
         }
-        
+
     };
 
 }
@@ -275,11 +275,27 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
     var list = []
 
+    var okBlocks = []
     for (var i = 0; i < cross_road_data.length; i++) {
 
         var itsDistance = calcCrow(userLocation.lat(), userLocation.lng(), parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1]));
 
         if (itsDistance <= distanceWithinAsKm) {
+            okBlocks.push(cross_road_data[i])
+        };
+
+    };
+
+    console.log("asdfasferrr: " + okBlocks.length)
+
+    var startIndex = 0
+    var tt = setInterval(function() {
+        for (var i = startIndex; i < startIndex + 10; i++) {
+            console.log(startIndex)
+            if (startIndex > okBlocks.length) {
+                clearInterval(tt)
+            };
+
             console.log('smaller')
 
             console.log()
@@ -288,7 +304,7 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
             var request = {
                 origin: aMapsLatLng(userLocation.lat(), userLocation.lng()),
-                destination: aMapsLatLng(parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1])),
+                destination: aMapsLatLng(parseFloat(okBlocks[i][0]), parseFloat(okBlocks[i][1])),
                 optimizeWaypoints: true,
                 travelMode: google.maps.TravelMode.WALKING
             }
@@ -380,8 +396,9 @@ function getBlockWithinDistance(distanceWithinAsKm) {
                     console.log('Google Maps route failed ' + status)
                 }
             });
-        }
-    };
+        };
+        startIndex = startIndex + 10
+    }, 2000)
 
 }
 
