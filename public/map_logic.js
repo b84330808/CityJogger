@@ -233,6 +233,13 @@ function getDataFromServer() {
         };
 
         // console.log(JSON.stringify(grid))
+
+
+        // UV
+        $('#uv_data').html("UV指數：" + getUV(uv))
+
+        $('#aq_data').html('空氣品質：' + getAirQuality(airquality))
+
     })
 }
 
@@ -463,5 +470,23 @@ function changeRoute() {
     //                 candidateLegs[i].polylines[j].setMap(map)
     //             }
     //         };
+
+}
+
+function getUV(rawData) {
+    var uvs = rawData
+    for (var i = 0; i < uvs.length; i++) {
+        if (uvs[i].SiteName == '臺北') {
+            return uvs[i].UVI
+        };
+    };
+}
+
+function getAirQuality(aq) {
+    for (var i = 0; i < aq.length; i++) {
+        if (aq[i].County == "臺北市") {
+            return aq[i].Status
+        };
+    };
 
 }
