@@ -42,7 +42,7 @@ function initMap() {
         // calcRoute(userLocation, aMapsLatLng(25.1, 121.56), map)
 
         // Testing 
-        getBlockWithinDistance(1)
+        getBlockWithinDistance(1.5)
 
     });
 
@@ -153,7 +153,10 @@ function drawCarDataOnMap(liveCarData, map) {
             color = "#bb3d15"
         }
 
-        drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
+        if (calcCrow(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX), parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX)) < 8) {
+            drawLinesOnMap([aLocation(parseFloat(results[i].StartWgsY), parseFloat(results[i].StartWgsX)), aLocation(parseFloat(results[i].EndWgsY), parseFloat(results[i].EndWgsX))], map, color)
+        }
+        
     };
 
 }
@@ -247,6 +250,8 @@ function addCrimeSiteToGrid(aCrimeSiteData) {
 }
 
 function getBlockWithinDistance(distanceWithinAsKm) {
+
+    map.setZoom(14)
 
     directionsService = new google.maps.DirectionsService();
     directionsRender = new google.maps.DirectionsRenderer();
