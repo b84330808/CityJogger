@@ -5,6 +5,8 @@ var userMarker;
 var candidateLegs = []
 var currentHighestScore = 0
 
+var latLngData = []
+
 $(function() {
     console.log("Document is ready!");
 });
@@ -20,6 +22,8 @@ function initMap() {
 
     map.addListener('click', function(event) {
         console.log(event.latLng.lat() + ", " + event.latLng.lng())
+        latLngData.push([event.latLng.lat().toString(), event.latLng.lng().toString()])
+        console.log(JSON.stringify(latLngData))
     });
 
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
@@ -57,7 +61,7 @@ function initMap() {
     // drawCarDataOnMap(carData, map)
 
     // Testing
-    // drawCrossRoadsMarkersOnMap(map)
+    drawCrossRoadsMarkersOnMap(map)
 
     // Testing
     getDataFromServer()
