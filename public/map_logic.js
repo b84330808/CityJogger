@@ -247,6 +247,9 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
     var list = []
 
+    var candidateLegs = []
+    var currentHighestScore = 0
+
     for (var i = 0; i < cross_road_data.length; i++) {
 
         var itsDistance = calcCrow(userLocation.lat(), userLocation.lng(), parseFloat(cross_road_data[i][0]), parseFloat(cross_road_data[i][1]));
@@ -295,8 +298,54 @@ function getBlockWithinDistance(distanceWithinAsKm) {
 
                     }
 
-                    console.log("score: " + calculateScoreFromAllGrids(allGridsForThisLeg))
-                    directionsRender.setDirections(response)
+                    var itsScore = calculateScoreFromAllGrids(allGridsForThisLeg);
+
+                    var scoreAndLeg = {
+                        score: itsScore,
+                        leg: sublist,
+                        polylines: []
+                    }
+
+                    if (itsScore >= currentHighestScore) {
+                        currentHighestScore = itsScore
+                        console.log('Current highest score: ' + currentHighestScore)
+                        // Remove all polylines
+                        for (var k = 0; k < candidateLegs.length; k++) {
+                            for (var h = 0; h < candidateLegs[k].polylines.length; h++) {
+                                candidateLegs[k].polylines[h].setMap(null);
+                            };
+                        };
+                    }
+
+                    // console.log("score: " + itsScore)
+                    // directionsRender.setDirections(response)
+
+                    // Create polylines
+                    for (var k = 0; k < sublist.length; k++) {
+                        sublist[k]
+
+                        var thePath = [aLocation(sublist[k].start.G, sublist[k].start.K), aLocation(sublist[k].end.G, sublist[k].end.K)]
+
+                        var lines = new google.maps.Polyline({
+                            path: thePath,
+                            geodesic: true,
+                            strokeColor: "#7bacfa",
+                            strokeOpacity: 0.7,
+                            strokeWeight: 4
+                        });
+
+                        if (itsScore == currentHighestScore) {
+                            lines.setMap(map);
+                        } else {
+                            lines.setMap(null);
+                        }
+                        
+                        scoreAndLeg.polylines.push(lines)
+                    };
+
+                    console.log(scoreAndLeg)
+
+                    candidateLegs.push(scoreAndLeg)
 
                     // console.log("All grid: " + allGridsForThisLeg)
 
